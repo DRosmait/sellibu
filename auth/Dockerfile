@@ -1,7 +1,7 @@
 FROM node:alpine
 
 WORKDIR /app
-COPY packege.json .
+COPY package.json .
 RUN yarn install --only=prod
 COPY . .
 
