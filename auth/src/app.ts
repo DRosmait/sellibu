@@ -4,6 +4,7 @@ import { json } from "body-parser";
 import cookieSession from "cookie-session";
 
 import { errorHandler } from "./middlewares";
+import { NotFoundError } from "./errors";
 
 const app = express();
 
@@ -16,7 +17,7 @@ app.use(
 );
 
 app.use("*", () => {
-  throw new Error("Route not found");
+  throw new NotFoundError("Route not found");
 });
 
 app.use(errorHandler);
