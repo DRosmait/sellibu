@@ -3,6 +3,7 @@ import { StatusCodes } from "http-status-codes";
 
 import app from "../../app";
 import { User } from "../../models";
+import { Password } from "../../helpers";
 
 describe("signup.ts", () => {
   it(`returns a ${StatusCodes.BAD_REQUEST} if required filds 'email', 'password' or 'userName' are not defined.`, async () => {
@@ -108,7 +109,7 @@ describe("signup.ts", () => {
       .expect(StatusCodes.CREATED);
 
     expect(createdUser.email).toEqual(user.email);
-    expect(createdUser.password).toEqual(user.password);
+    expect(Password.compare(createdUser.password, user.password)).toBeTruthy();
     expect(createdUser.userName).toEqual(user.userName);
     expect(createdUser.location.lat).toEqual(user.location.lat);
     expect(createdUser.location.long).toEqual(user.location.long);
@@ -117,5 +118,11 @@ describe("signup.ts", () => {
     expect(createdUser.address.street).toEqual(user.address.street);
     expect(createdUser.address.country).toEqual(user.address.country);
     expect(createdUser.address.countryCode).toEqual(user.address.countryCode);
+  });
+
+  it("sets cookie with JWT user payload after successful sign up", async () => {
+    const [response] = await global.signin();
+
+    expect(response).toBeDefined();
   });
 });

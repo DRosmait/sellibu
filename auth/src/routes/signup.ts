@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 import { body } from "express-validator";
+import jwt from "jsonwebtoken";
 import { StatusCodes } from "http-status-codes";
 
 import { validateRequest } from "../middlewares";
@@ -46,6 +47,19 @@ router.post(
       address,
     });
     await newUser.save();
+
+    // Generate JWT user payload
+    const userJwt = jwt.sign(
+      {
+        id: newUser.id,
+        email: newUser.email,
+        userName: newUser.userName,
+      },
+      process.env.JWT_KEY!
+    );
+
+    // store JWT user payload in request's session object
+    req.session = { jwt: userJwt };
 
     res.status(StatusCodes.CREATED).send(newUser);
   }
