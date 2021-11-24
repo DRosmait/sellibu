@@ -3,10 +3,10 @@ import "express-async-errors";
 import { json } from "body-parser";
 import cookieSession from "cookie-session";
 
-import { errorHandler } from "./middlewares";
+import { errorHandler, currentUser } from "./middlewares";
 import { NotFoundError } from "./errors";
 
-import { signupRouter, signinRouter } from "./routes";
+import { signupRouter, signinRouter, currentUserRouter } from "./routes";
 
 const app = express();
 
@@ -17,7 +17,9 @@ app.use(
     secure: process.env.NODE_ENV !== "test",
   })
 );
+app.use(currentUser);
 
+app.use(currentUserRouter);
 app.use(signupRouter);
 app.use(signinRouter);
 
