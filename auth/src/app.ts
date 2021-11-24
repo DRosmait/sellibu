@@ -6,7 +6,12 @@ import cookieSession from "cookie-session";
 import { errorHandler, currentUser } from "./middlewares";
 import { NotFoundError } from "./errors";
 
-import { signupRouter, signinRouter, currentUserRouter } from "./routes";
+import {
+  signupRouter,
+  signinRouter,
+  signoutRouter,
+  currentUserRouter,
+} from "./routes";
 
 const app = express();
 
@@ -19,9 +24,10 @@ app.use(
 );
 app.use(currentUser);
 
-app.use(currentUserRouter);
 app.use(signupRouter);
 app.use(signinRouter);
+app.use(signoutRouter);
+app.use(currentUserRouter);
 
 app.use("*", () => {
   throw new NotFoundError("Route not found");
