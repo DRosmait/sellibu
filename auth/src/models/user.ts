@@ -45,6 +45,7 @@ const userSchema = new mongoose.Schema(
     email: {
       type: String,
       required: true,
+      unique: true,
     },
     password: {
       type: String,
@@ -58,7 +59,10 @@ const userSchema = new mongoose.Schema(
     location: {
       lat: Number,
       long: Number,
-      radius: Number,
+      radius: {
+        type: Number,
+        default: 1 * 1000, // 1km
+      },
     },
     address: {
       city: String,
