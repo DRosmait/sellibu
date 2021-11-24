@@ -7,7 +7,7 @@ import app from "../app";
 let mongo: MongoMemoryServer;
 
 declare global {
-  function signin(): Promise<[Response, string[]]>;
+  function signin(): Promise<{ response: Response; cookie: string[] }>;
 }
 
 beforeAll(async () => {
@@ -55,5 +55,5 @@ global.signin = async () => {
 
   const cookie = response.get("Set-Cookie");
 
-  return [response, cookie];
+  return { response, cookie };
 };
