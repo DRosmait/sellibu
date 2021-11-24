@@ -109,7 +109,6 @@ describe("signup.ts", () => {
       .expect(StatusCodes.CREATED);
 
     expect(createdUser.email).toEqual(user.email);
-    expect(Password.compare(createdUser.password, user.password)).toBeTruthy();
     expect(createdUser.userName).toEqual(user.userName);
     expect(createdUser.location.lat).toEqual(user.location.lat);
     expect(createdUser.location.long).toEqual(user.location.long);
@@ -120,9 +119,15 @@ describe("signup.ts", () => {
     expect(createdUser.address.countryCode).toEqual(user.address.countryCode);
   });
 
-  it("sets cookie with JWT user payload after successful sign up", async () => {
-    const [response] = await global.signin();
+  it(`returns NO password in user object on success.`, async () => {
+    const { response } = await global.signin();
 
-    expect(response).toBeDefined();
+    expect(response.body.password).not.toBeDefined();
+  });
+
+  it("sets cookie with JWT user payload after successful sign up", async () => {
+    const { cookie } = await global.signin();
+
+    expect(cookie).toBeDefined();
   });
 });
