@@ -53,7 +53,10 @@ router.post(
       {
         id: newUser.id,
         email: newUser.email,
+        phone: newUser.phone,
         userName: newUser.userName,
+        location: newUser.location,
+        address: newUser.address,
       },
       process.env.JWT_KEY!
     );
