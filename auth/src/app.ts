@@ -14,6 +14,7 @@ import {
 } from "./routes";
 
 const app = express();
+app.set("trust proxy", true);
 
 app.use(json());
 app.use(
@@ -30,7 +31,7 @@ app.use(signoutRouter);
 app.use(currentUserRouter);
 
 app.use("*", () => {
-  throw new NotFoundError("Route not found");
+  throw new NotFoundError();
 });
 
 app.use(errorHandler);
