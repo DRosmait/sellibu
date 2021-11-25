@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import app from "./app";
 
 const setup = async () => {
-  if (!process.env.JWT_SECRET) {
+  if (!process.env.JWT_KEY) {
     throw new Error("JWT_KEY env variable should be definde.");
   }
 
