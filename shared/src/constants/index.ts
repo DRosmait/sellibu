@@ -1,6 +1,1 @@
-export enum TicketStatus {
-  Created = "created",
-  Expired = "expired",
-  Closed = "closed",
-  OnHold = "on:hold",
-}
+export * from "./ticket-status";
