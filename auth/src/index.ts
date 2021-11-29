@@ -4,7 +4,7 @@ import app from "./app";
 
 const setup = async () => {
   if (!process.env.JWT_KEY) {
-    throw new Error("JWT_KEY env variable should be definde.");
+    throw new Error("JWT_KEY env variable must be definde.");
   }
 
   try {
@@ -14,9 +14,7 @@ const setup = async () => {
     console.error(err);
   }
 
-  app.listen("5000", () =>
-    console.log("Auth server is listening on port 5000")
-  );
+  app.listen(5000, () => console.log("Auth server is listening on port 5000"));
 };
 
 setup();
