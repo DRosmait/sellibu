@@ -1,1 +1,1 @@
-export * from "./ticket-status";
+export * from "./ad-status";
