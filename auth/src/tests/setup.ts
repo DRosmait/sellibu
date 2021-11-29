@@ -38,6 +38,7 @@ global.signin = async () => {
     email: "test@test.com",
     password: "password",
     userName: "user",
+    phone: "+380971234567",
     location: {
       lat: 53.86182,
       long: 10.66172,
