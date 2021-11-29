@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ads-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ads
+  template:
+    metadata:
+      labels:
+        app: ads
+    spec:
+      containers:
+        - name: ads
+          image: amid3n/ads
+          env:
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ads-srv
+spec:
+  selector:
+    app: ads
+  ports:
+    - name: ads
+      protocol: TCP
+      port: 5000
+      targetPort: 5000
