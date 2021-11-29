@@ -2,9 +2,7 @@ import express from "express";
 import "express-async-errors";
 import { json } from "body-parser";
 import cookieSession from "cookie-session";
-
-import { errorHandler, currentUser } from "./middlewares";
-import { NotFoundError } from "./errors";
+import { errorHandler, currentUser, NotFoundError } from "@sellibu-proj/common";
 
 import {
   signupRouter,
