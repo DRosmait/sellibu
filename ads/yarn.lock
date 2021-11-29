@@ -509,9 +509,9 @@
     fastq "^1.6.0"
 
 "@sellibu-proj/common@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@sellibu-proj/common/-/common-1.0.2.tgz#96373f35fae06dbbeb1d09ffa4b8a4dacfffaa68"
-  integrity sha512-Qp+fnynWnn0LGsBNfLmWf6lifeG8k2qgt4xqwPdLrI4qQXQkRryK4/2PKqKU6Hjl/Fi2l0kdx4DjkhQ8udcJRw==
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@sellibu-proj/common/-/common-1.0.4.tgz#3e5c4547ddc39ab539fd9d1d6a634c9c3b192b38"
+  integrity sha512-Pzuuc4A70Jltrk9F1qn/LJ53qp9wuBIygFt8pkxhl3jsX+DGTvPOL8e+5LgiobiqaqeLFdpOsrnw7Y4QoU0BRA==
   dependencies:
     "@types/cookie-session" "^2.0.43"
     "@types/express" "^4.17.13"
