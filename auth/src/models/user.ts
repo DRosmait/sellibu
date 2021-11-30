@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 
 import { Password } from "../helpers";
 
@@ -36,6 +37,7 @@ interface UserDoc extends mongoose.Document {
     country?: string;
     countryCode?: string;
   };
+  version: number;
 }
 
 interface UserModel extends mongoose.Model<UserDoc> {
@@ -84,6 +86,9 @@ const userSchema = new mongoose.Schema(
     },
   }
 );
+
+userSchema.set("versionKey", "version");
+userSchema.plugin(updateIfCurrentPlugin);
 
 userSchema.pre("save", async function (done) {
   if (this.isModified("password")) {
