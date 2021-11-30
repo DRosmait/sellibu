@@ -31,7 +31,7 @@ describe("User model", () => {
     };
 
     const secondSave = async () => {
-      secondInstance!.set({ password: "first change" });
+      secondInstance!.set({ password: "second change" });
       await secondInstance!.save();
     };
 

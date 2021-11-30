@@ -3,7 +3,6 @@ import { StatusCodes } from "http-status-codes";
 
 import app from "../../app";
 import { User } from "../../models";
-import { Password } from "../../helpers";
 
 describe("signup.ts", () => {
   it(`returns a ${StatusCodes.BAD_REQUEST} if required filds 'email', 'password' or 'userName' are not defined.`, async () => {
