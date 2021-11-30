@@ -5,7 +5,7 @@ describe("User model", () => {
     const user = User.build({
       email: "test@test.com",
       password: "somepassword",
-      userName: "Test",
+      userName: "Max Mustermann",
     });
     await user.save();
 
