@@ -1,10 +1,12 @@
+import mongoose from "mongoose";
+
 import { User } from "..";
 
 describe("User model", () => {
   it("has 'id' field.", async () => {
     const user = User.build({
+      id: new mongoose.Types.ObjectId().toHexString(),
       email: "test@test.com",
-      password: "somepassword",
       userName: "Max Mustermann",
     });
     await user.save();
@@ -16,8 +18,8 @@ describe("User model", () => {
 
   it("implements optimistic concurrency control", async () => {
     const user = User.build({
+      id: new mongoose.Types.ObjectId().toHexString(),
       email: "test@test.com",
-      password: "password",
       userName: "Max Mustermann",
     });
     await user.save();
@@ -44,8 +46,8 @@ describe("User model", () => {
 
   it("increments version number on each save.", async () => {
     const user = User.build({
+      id: new mongoose.Types.ObjectId().toHexString(),
       email: "test@test.com",
-      password: "password",
       userName: "Max Mustermann",
     });
 

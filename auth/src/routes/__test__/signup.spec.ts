@@ -3,7 +3,6 @@ import { StatusCodes } from "http-status-codes";
 
 import app from "../../app";
 import { User } from "../../models";
-import { Password } from "../../helpers";
 
 describe("signup.ts", () => {
   it(`returns a ${StatusCodes.BAD_REQUEST} if required filds 'email', 'password' or 'userName' are not defined.`, async () => {
@@ -110,13 +109,6 @@ describe("signup.ts", () => {
 
     expect(createdUser.email).toEqual(user.email);
     expect(createdUser.userName).toEqual(user.userName);
-    expect(createdUser.location.lat).toEqual(user.location.lat);
-    expect(createdUser.location.long).toEqual(user.location.long);
-    expect(createdUser.location.radius).toEqual(user.location.radius);
-    expect(createdUser.address.city).toEqual(user.address.city);
-    expect(createdUser.address.street).toEqual(user.address.street);
-    expect(createdUser.address.country).toEqual(user.address.country);
-    expect(createdUser.address.countryCode).toEqual(user.address.countryCode);
   });
 
   it(`returns NO password in user object on success.`, async () => {

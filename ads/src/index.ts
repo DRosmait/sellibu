@@ -3,18 +3,18 @@ import mongoose from "mongoose";
 import app from "./app";
 
 const setup = async () => {
-  if (!process.env.JWT_KEY) {
-    throw new Error("JWT_KEY env variable must be definde.");
+  if (process.env.JWT_KEY) {
+    throw new Error("JWT_KEY evn variable must bu define.");
   }
 
   try {
     await mongoose.connect("mongodb://auth-mongo-srv:27017/auth");
     console.log("Connected to MongoDB");
   } catch (err) {
-    console.error(err);
+    console.log(err);
   }
 
-  app.listen(5000, () => console.log("Auth server is listening on port 5000"));
+  app.listen(5000, () => console.log("Ads server is listening on port 5000"));
 };
 
 setup();

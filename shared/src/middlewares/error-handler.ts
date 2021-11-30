@@ -13,8 +13,9 @@ export function errorHandler(
     res.status(err.statusCode).send({ errors: err.serializeErrors() });
   } else {
     console.error(err);
-
-    res.status(StatusCodes.BAD_REQUEST);
+    res
+      .status(StatusCodes.BAD_REQUEST)
+      .send({ errors: [{ message: err.message }] });
   }
 
   next();

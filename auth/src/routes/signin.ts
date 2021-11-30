@@ -36,8 +36,6 @@ router.post(
         id: existingUser.id,
         email: existingUser.email,
         userName: existingUser.userName,
-        location: existingUser.location,
-        address: existingUser.address,
       },
       process.env.JWT_KEY!
     );
