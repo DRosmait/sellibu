@@ -31,26 +31,11 @@ afterAll(async () => {
   await mongo.stop();
 });
 
-global.signin = (full: boolean = true, userId?: string) => {
+global.signin = (userId?: string) => {
   const payload = {
     id: userId && new mongoose.Types.ObjectId().toHexString(),
     email: "test@test.com",
-    password: "password",
     userName: "Max Mustermann",
-    ...(full && {
-      phone: "+380971234567",
-      location: {
-        lat: 53.86182,
-        long: 10.66172,
-        radius: 1500,
-      },
-      address: {
-        city: "Kyiv",
-        street: "Hlybochytska St, 32А",
-        country: "Ukraine",
-        countryCode: "02000",
-      },
-    }),
   };
 
   const token = jwt.sign(payload, process.env.JWT_KEY!);
