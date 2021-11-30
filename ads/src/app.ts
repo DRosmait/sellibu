@@ -4,9 +4,10 @@ import { json } from "body-parser";
 import cookieSession from "cookie-session";
 import { errorHandler, currentUser, NotFoundError } from "@sellibu-proj/common";
 
+import { createAdRouter } from "./routes";
+
 const app = express();
 
-app.use(json);
 app.set("trust proxy", true);
 
 app.use(json());
@@ -17,6 +18,8 @@ app.use(
   })
 );
 app.use(currentUser);
+
+app.use(createAdRouter);
 
 app.use("*", () => {
   throw new NotFoundError();
