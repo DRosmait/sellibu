@@ -1289,6 +1289,11 @@ cookies@0.8.0:
     depd "~2.0.0"
     keygrip "~1.1.0"
 
+core-js@^3.2.1:
+  version "3.19.2"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.19.2.tgz#ae216d7f4f7e924d9a2e3ff1e4b1940220f9157b"
+  integrity sha512-ciYCResnLIATSsXuXnIOH4CbdfgV+H1Ltg16hJFN7/v6OxqnFr/IFGeLacaZ+fHLAm0TBbXwNK9/DNBzBUrO/g==
+
 create-require@^1.1.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/create-require/-/create-require-1.1.1.tgz#c1d7e8f1e5f6cfc9ff65f9cd352d37348756c333"
@@ -2656,7 +2661,7 @@ jws@^3.2.2:
     jwa "^1.4.1"
     safe-buffer "^5.0.1"
 
-kareem@2.3.2:
+kareem@2.3.2, kareem@^2.3.0:
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/kareem/-/kareem-2.3.2.tgz#78c4508894985b8d38a0dc15e1a8e11078f2ca93"
   integrity sha512-STHz9P7X2L4Kwn72fA4rGyqyXdmrMSdxqHx9IXon/FXluXieaFA6KJ2upcHAHxQPQ0LeM/OjLrhFxifHewOALQ==
@@ -2969,6 +2974,15 @@ mongodb@^4.1.3:
     mongodb-connection-string-url "^2.2.0"
   optionalDependencies:
     saslprep "^1.0.3"
+
+mongoose-update-if-current@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/mongoose-update-if-current/-/mongoose-update-if-current-1.4.0.tgz#1bba7b3509791cf98320a5a06556ee01575a7a20"
+  integrity sha512-Rau2nvdiLExqXrSOwMMgDYQgf/fwTJQpPidTcT7C9UMQ282gTKXjDuh5vrjVvVQpfuvkiPis0tGHdXffaD54bg==
+  dependencies:
+    core-js "^3.2.1"
+    kareem "^2.3.0"
+    regenerator-runtime "^0.13.5"
 
 mongoose@^6.0.13:
   version "6.0.13"
@@ -3388,6 +3402,11 @@ redent@^4.0.0:
   dependencies:
     indent-string "^5.0.0"
     strip-indent "^4.0.0"
+
+regenerator-runtime@^0.13.5:
+  version "0.13.9"
+  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.13.9.tgz#8925742a98ffd90814988d7566ad30ca3b263b52"
+  integrity sha512-p3VT+cOEgxFsRRA9X4lkI1E+k2/CtnKtU4gcxyaCUreilL/vqI6CdZ3wxVUx3UOUg+gnUOQQcRI7BmSI656MYA==
 
 regexp-clone@1.0.0, regexp-clone@^1.0.0:
   version "1.0.0"
