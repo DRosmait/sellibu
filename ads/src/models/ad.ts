@@ -14,7 +14,7 @@ interface AdAttrs {
   status?: AdStatus;
 }
 
-interface AdDoc extends mongoose.Document {
+export interface AdDoc extends mongoose.Document {
   title: string;
   description: string;
   price: number;
@@ -39,7 +39,7 @@ const adSchema = new mongoose.Schema(
     },
     price: {
       required: true,
-      type: String,
+      type: Number,
     },
     status: {
       required: true,
