@@ -30,7 +30,7 @@ router.post(
   ],
   validateRequest,
   async (req: Request, res: Response) => {
-    const { email, password, userName, location, address } = req.body;
+    const { email, password, userName } = req.body;
 
     const existingUser = await User.findOne({ email });
 
@@ -42,8 +42,6 @@ router.post(
       email,
       password,
       userName,
-      location,
-      address,
     });
     await newUser.save();
 
@@ -52,10 +50,7 @@ router.post(
       {
         id: newUser.id,
         email: newUser.email,
-        phone: newUser.phone,
         userName: newUser.userName,
-        location: newUser.location,
-        address: newUser.address,
       },
       process.env.JWT_KEY!
     );

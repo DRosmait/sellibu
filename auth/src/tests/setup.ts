@@ -38,18 +38,6 @@ global.signin = async () => {
     email: "test@test.com",
     password: "password",
     userName: "user",
-    phone: "+380971234567",
-    location: {
-      lat: 53.86182,
-      long: 10.66172,
-      radius: 1500,
-    },
-    address: {
-      city: "Kyiv",
-      street: "Hlybochytska St, 32А",
-      country: "Ukraine",
-      countryCode: "02000",
-    },
   };
 
   const response = await request(app).post("/api/users/signup").send(user);
