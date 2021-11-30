@@ -21,7 +21,7 @@ describe("current-user.ts", () => {
     const { body } = await request(app)
       .get("/api/users/currentuser")
       .send()
-      .expect(StatusCodes.OK);
+      .expect(StatusCodes.UNAUTHORIZED);
 
     expect(body.currentUser).toBeNull();
   });
