@@ -7,6 +7,7 @@ import { errorHandler, currentUser, NotFoundError } from "@sellibu-proj/common";
 import {
   createAdRouter,
   closeAdRouter,
+  updateAdRouter,
   showAdRouter,
   showAllUserAdsRouter,
   showAllAdsRouter,
@@ -27,6 +28,7 @@ app.use(currentUser);
 
 app.use(createAdRouter);
 app.use(closeAdRouter);
+app.use(updateAdRouter);
 app.use(showAdRouter);
 app.use(showAllUserAdsRouter);
 app.use(showAllAdsRouter);
