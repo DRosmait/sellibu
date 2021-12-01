@@ -9,7 +9,7 @@ import { createUserInDB } from "./helpers";
 describe("create.ts", () => {
   it(`returns a ${StatusCodes.UNAUTHORIZED} if user is not signed in.`, async () => {
     await request(app)
-      .post("/api/ads/create")
+      .post("/api/ads")
       .send({
         title: "Ad's title",
         description: "Ad's long description",
@@ -20,7 +20,7 @@ describe("create.ts", () => {
 
   it(`returns a ${StatusCodes.UNAUTHORIZED} if signed user is not in DB.`, async () => {
     await request(app)
-      .post("/api/ads/create")
+      .post("/api/ads")
       .set("Cookie", global.signin())
       .send({
         title: "Ad's title",
@@ -34,7 +34,7 @@ describe("create.ts", () => {
     const user = await createUserInDB();
 
     await request(app)
-      .post("/api/ads/create")
+      .post("/api/ads")
       .set("Cookie", global.signin(user.id))
       .send({
         title: "Ad's title",
@@ -43,7 +43,7 @@ describe("create.ts", () => {
       .expect(StatusCodes.BAD_REQUEST);
 
     await request(app)
-      .post("/api/ads/create")
+      .post("/api/ads")
       .set("Cookie", global.signin(user.id))
       .send({
         title: "Ad's title",
@@ -52,7 +52,7 @@ describe("create.ts", () => {
       .expect(StatusCodes.BAD_REQUEST);
 
     await request(app)
-      .post("/api/ads/create")
+      .post("/api/ads")
       .set("Cookie", global.signin(user.id))
       .send({
         description: "Ad's long description",
@@ -65,7 +65,7 @@ describe("create.ts", () => {
     const user = await createUserInDB();
 
     await request(app)
-      .post("/api/ads/create")
+      .post("/api/ads")
       .set("Cookie", global.signin(user.id))
       .send({
         title: "A",
@@ -75,7 +75,7 @@ describe("create.ts", () => {
       .expect(StatusCodes.BAD_REQUEST);
 
     await request(app)
-      .post("/api/ads/create")
+      .post("/api/ads")
       .set("Cookie", global.signin(user.id))
       .send({
         title: Array(100).fill("very long title").join(" "),
@@ -89,7 +89,7 @@ describe("create.ts", () => {
     const user = await createUserInDB();
 
     await request(app)
-      .post("/api/ads/create")
+      .post("/api/ads")
       .set("Cookie", global.signin(user.id))
       .send({
         title: "Ad's title",
@@ -103,7 +103,7 @@ describe("create.ts", () => {
     const user = await createUserInDB();
 
     await request(app)
-      .post("/api/ads/create")
+      .post("/api/ads")
       .set("Cookie", global.signin(user.id))
       .send({
         title: "Ad's title",
@@ -113,7 +113,7 @@ describe("create.ts", () => {
       .expect(StatusCodes.BAD_REQUEST);
 
     await request(app)
-      .post("/api/ads/create")
+      .post("/api/ads")
       .set("Cookie", global.signin(user.id))
       .send({
         title: "Ad's title",
@@ -127,7 +127,7 @@ describe("create.ts", () => {
     const user = await createUserInDB();
 
     const { body: newAd } = await request(app)
-      .post("/api/ads/create")
+      .post("/api/ads")
       .set("Cookie", global.signin(user.id))
       .send({
         title: "Ad's title",

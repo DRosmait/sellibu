@@ -8,14 +8,12 @@ import {
 } from "@sellibu-proj/common";
 
 import { Ad, User } from "../models";
+import { titleLength, descriptionLength } from "./helpers";
 
 const router = express.Router();
 
-const titleLength = { min: 3, max: 200 };
-const descriptionLength = { max: 1000 };
-
 router.post(
-  "/api/ads/create",
+  "/api/ads",
   requireAuth,
   [
     body("title")
