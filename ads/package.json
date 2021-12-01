@@ -13,6 +13,9 @@
     "testEnvironment": "node",
     "setupFilesAfterEnv": [
       "./src/tests/setup.ts"
+    ],
+    "modulePathIgnorePatterns": [
+      "helpers"
     ]
   },
   "keywords": [],
