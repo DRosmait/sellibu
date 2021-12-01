@@ -8,9 +8,12 @@ import { addUserToDB } from "./helpers";
 
 describe("close.ts", () => {
   it(`returns a ${StatusCodes.BAD_REQUEST} if ad wasn't found.`, async () => {
+    // create user
+    const user = await addUserToDB();
+
     await request(app)
-      .post("/api/ads/close")
-      .set("Cookie", global.signin())
+      .delete("/api/ads/close")
+      .set("Cookie", global.signin(user.id))
       .send({ id: new mongoose.Types.ObjectId().toHexString() })
       .expect(StatusCodes.BAD_REQUEST);
   });
@@ -32,7 +35,7 @@ describe("close.ts", () => {
 
     // try to close the ad with another user
     await request(app)
-      .post("/api/ads/close")
+      .delete("/api/ads/close")
       .set("Cookie", global.signin())
       .send({ id: new mongoose.Types.ObjectId().toHexString() })
       .expect(StatusCodes.BAD_REQUEST);
@@ -55,7 +58,7 @@ describe("close.ts", () => {
 
     // close the ad with owner user
     await request(app)
-      .post("/api/ads/close")
+      .delete("/api/ads/close")
       .set("Cookie", global.signin(user.id))
       .send({ id: new mongoose.Types.ObjectId().toHexString() })
       .expect(StatusCodes.BAD_REQUEST);
@@ -66,7 +69,7 @@ describe("close.ts", () => {
     const user = await addUserToDB();
 
     // create ad
-    await request(app)
+    const { body: ad } = await request(app)
       .post("/api/ads/create")
       .set("Cookie", global.signin(user.id))
       .send({
@@ -76,13 +79,15 @@ describe("close.ts", () => {
       })
       .expect(StatusCodes.CREATED);
 
+    expect(ad.status).toEqual(AdStatus.Open);
+
     // close the ad with owner user
     const { body: closedAd } = await request(app)
-      .post("/api/ads/close")
+      .delete("/api/ads/close")
       .set("Cookie", global.signin(user.id))
-      .send({ id: new mongoose.Types.ObjectId().toHexString() })
-      .expect(StatusCodes.BAD_REQUEST);
+      .send({ id: ad.id })
+      .expect(StatusCodes.OK);
 
-    expect(closedAd).toEqual(AdStatus.Closed);
+    expect(closedAd.status).toEqual(AdStatus.Closed);
   });
 });
