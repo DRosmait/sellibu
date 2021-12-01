@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 
 import app from "../../app";
 import { User } from "../../models";
-import { addUserToDB } from "./helpers";
+import { createUserInDB } from "./helpers";
 
 describe("create.ts", () => {
   it(`returns a ${StatusCodes.UNAUTHORIZED} if user is not signed in.`, async () => {
@@ -31,7 +31,7 @@ describe("create.ts", () => {
   });
 
   it(`returns a ${StatusCodes.BAD_REQUEST} if required props are not defined.`, async () => {
-    const user = await addUserToDB();
+    const user = await createUserInDB();
 
     await request(app)
       .post("/api/ads/create")
@@ -62,7 +62,7 @@ describe("create.ts", () => {
   });
 
   it(`returns a ${StatusCodes.BAD_REQUEST} if 'title' is not in the range.`, async () => {
-    const user = await addUserToDB();
+    const user = await createUserInDB();
 
     await request(app)
       .post("/api/ads/create")
@@ -86,7 +86,7 @@ describe("create.ts", () => {
   });
 
   it(`returns a ${StatusCodes.BAD_REQUEST} if 'description' is not in the range.`, async () => {
-    const user = await addUserToDB();
+    const user = await createUserInDB();
 
     await request(app)
       .post("/api/ads/create")
@@ -100,7 +100,7 @@ describe("create.ts", () => {
   });
 
   it(`returns a ${StatusCodes.BAD_REQUEST} if 'price' is ZERO or negative value.`, async () => {
-    const user = await addUserToDB();
+    const user = await createUserInDB();
 
     await request(app)
       .post("/api/ads/create")
@@ -124,7 +124,7 @@ describe("create.ts", () => {
   });
 
   it(`returns a ${StatusCodes.CREATED} with AD object on success.`, async () => {
-    const user = await addUserToDB();
+    const user = await createUserInDB();
 
     const { body: newAd } = await request(app)
       .post("/api/ads/create")

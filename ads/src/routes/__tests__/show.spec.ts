@@ -3,18 +3,18 @@ import mongoose from "mongoose";
 import { StatusCodes } from "http-status-codes";
 
 import app from "../../app";
-import { createAds } from "./helpers";
+import { createAdsInDB, getRandomMongooseId } from "./helpers";
 
 describe("show.ts", () => {
   it(`returns ${StatusCodes.NOT_FOUND} if ad not found.`, async () => {
     await request(app)
-      .get("/api/ads/" + new mongoose.Types.ObjectId().toHexString())
+      .get("/api/ads/" + getRandomMongooseId())
       .send()
       .expect(StatusCodes.NOT_FOUND);
   });
 
   it(`returns ${StatusCodes.OK} if ad found.`, async () => {
-    const ads = await createAds();
+    const ads = await createAdsInDB();
     const ad = ads[5];
 
     const { body } = await request(app)

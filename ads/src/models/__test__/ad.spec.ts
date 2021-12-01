@@ -30,6 +30,12 @@ describe("ad.js", () => {
     expect(ad.id).toBeDefined();
   });
 
+  it("has 'userId' field", async () => {
+    const ad = await createAd();
+
+    expect(ad.userId).toBeDefined();
+  });
+
   it(`has '${AdStatus.Open}' default status after creation.`, async () => {
     const ad = Ad.build({
       title: "Title",

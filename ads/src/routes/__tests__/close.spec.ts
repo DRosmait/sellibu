@@ -4,23 +4,23 @@ import { StatusCodes } from "http-status-codes";
 import { AdStatus } from "@sellibu-proj/common";
 
 import app from "../../app";
-import { addUserToDB } from "./helpers";
+import { createUserInDB, getRandomMongooseId } from "./helpers";
 
 describe("close.ts", () => {
   it(`returns a ${StatusCodes.BAD_REQUEST} if ad wasn't found.`, async () => {
     // create user
-    const user = await addUserToDB();
+    const user = await createUserInDB();
 
     await request(app)
       .delete("/api/ads/close")
       .set("Cookie", global.signin(user.id))
-      .send({ id: new mongoose.Types.ObjectId().toHexString() })
+      .send({ id: getRandomMongooseId() })
       .expect(StatusCodes.BAD_REQUEST);
   });
 
   it(`returns a ${StatusCodes.BAD_REQUEST} if user is not the ad's owner.`, async () => {
     // create user
-    const user = await addUserToDB();
+    const user = await createUserInDB();
 
     // create ad
     await request(app)
@@ -37,13 +37,13 @@ describe("close.ts", () => {
     await request(app)
       .delete("/api/ads/close")
       .set("Cookie", global.signin())
-      .send({ id: new mongoose.Types.ObjectId().toHexString() })
+      .send({ id: getRandomMongooseId() })
       .expect(StatusCodes.BAD_REQUEST);
   });
 
   it(`returns a ${StatusCodes.OK} when ad was successfully closed.`, async () => {
     // create user
-    const user = await addUserToDB();
+    const user = await createUserInDB();
 
     // create ad
     await request(app)
@@ -60,13 +60,13 @@ describe("close.ts", () => {
     await request(app)
       .delete("/api/ads/close")
       .set("Cookie", global.signin(user.id))
-      .send({ id: new mongoose.Types.ObjectId().toHexString() })
+      .send({ id: getRandomMongooseId() })
       .expect(StatusCodes.BAD_REQUEST);
   });
 
   it(`changes ad's status to ${AdStatus.Closed}.`, async () => {
     // create user
-    const user = await addUserToDB();
+    const user = await createUserInDB();
 
     // create ad
     const { body: ad } = await request(app)
