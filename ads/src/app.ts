@@ -8,6 +8,7 @@ import {
   createAdRouter,
   closeAdRouter,
   showAdRouter,
+  showAllUserAdsRouter,
   showAllAdsRouter,
 } from "./routes";
 
@@ -27,6 +28,7 @@ app.use(currentUser);
 app.use(createAdRouter);
 app.use(closeAdRouter);
 app.use(showAdRouter);
+app.use(showAllUserAdsRouter);
 app.use(showAllAdsRouter);
 
 app.use("*", () => {
