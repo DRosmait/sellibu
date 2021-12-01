@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { AdStatus } from "@sellibu-proj/common";
 
-import { Ad, User, UserDoc } from "../../../models";
+import { Ad, AdDoc, User, UserDoc } from "../../../models";
 
 export async function addUserToDB(
   payload?: Partial<{
@@ -25,16 +25,16 @@ export function createAds({
   closedCount = 2,
   userDoc,
 }: {
-  count: number;
-  closedCount: number;
+  count?: number;
+  closedCount?: number;
   userDoc?: UserDoc;
-}) {
+} = {}) {
   if (count < closedCount)
     throw new Error(
       "createAds() function expect 'count' greater than 'closedCount'"
     );
 
-  return Promise.race(
+  return Promise.all(
     Array(count)
       .fill("")
       .map(async (_, idx) => {

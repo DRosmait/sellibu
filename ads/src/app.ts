@@ -4,7 +4,12 @@ import { json } from "body-parser";
 import cookieSession from "cookie-session";
 import { errorHandler, currentUser, NotFoundError } from "@sellibu-proj/common";
 
-import { createAdRouter, closeAdRouter, showAllAdsRouter } from "./routes";
+import {
+  createAdRouter,
+  closeAdRouter,
+  showAdRouter,
+  showAllAdsRouter,
+} from "./routes";
 
 const app = express();
 
@@ -21,6 +26,7 @@ app.use(currentUser);
 
 app.use(createAdRouter);
 app.use(closeAdRouter);
+app.use(showAdRouter);
 app.use(showAllAdsRouter);
 
 app.use("*", () => {
