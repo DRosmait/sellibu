@@ -19,6 +19,7 @@ export interface AdDoc extends mongoose.Document {
   description: string;
   price: number;
   user: UserDoc;
+  userId: string;
   status: AdStatus;
   version: number;
 }
@@ -52,6 +53,10 @@ const adSchema = new mongoose.Schema(
       type: mongoose.Types.ObjectId,
       ref: "User",
     },
+    userId: {
+      required: true,
+      type: String,
+    },
   },
   {
     toJSON: {
@@ -67,7 +72,10 @@ adSchema.set("versionKey", "version");
 adSchema.plugin(updateIfCurrentPlugin);
 
 adSchema.statics.build = (attrs: AdAttrs) => {
-  return new Ad(attrs);
+  return new Ad({
+    ...attrs,
+    userId: attrs.user.id,
+  });
 };
 
 const Ad = mongoose.model<AdDoc, AdModel>("Ad", adSchema);
