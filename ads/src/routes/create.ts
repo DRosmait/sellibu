@@ -25,6 +25,7 @@ router.post(
         `Title must be between ${titleLength.min} and ${titleLength.max} characters.`
       ),
     body("description")
+      .notEmpty()
       .trim()
       .isLength(descriptionLength)
       .withMessage(

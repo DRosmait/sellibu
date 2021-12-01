@@ -4,7 +4,7 @@ import { json } from "body-parser";
 import cookieSession from "cookie-session";
 import { errorHandler, currentUser, NotFoundError } from "@sellibu-proj/common";
 
-import { createAdRouter } from "./routes";
+import { createAdRouter, closeAdRouter } from "./routes";
 
 const app = express();
 
@@ -20,6 +20,7 @@ app.use(
 app.use(currentUser);
 
 app.use(createAdRouter);
+app.use(closeAdRouter);
 
 app.use("*", () => {
   throw new NotFoundError();
