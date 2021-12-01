@@ -1,27 +1,23 @@
 import express, { Request, Response } from "express";
-import { body } from "express-validator";
+import mongoose from "mongoose";
 import { StatusCodes } from "http-status-codes";
-import {
-  requireAuth,
-  validateRequest,
-  BadRequestError,
-  AdStatus,
-} from "@sellibu-proj/common";
+import { requireAuth, AdStatus, NotFoundError } from "@sellibu-proj/common";
 
 import { Ad } from "../models";
 
 const router = express.Router();
 
 router.delete(
-  "/api/ads/close",
+  "/api/ads/:id",
   requireAuth,
-  [body("id").notEmpty().withMessage("Ad's ID must be defined.")],
-  validateRequest,
   async (req: Request, res: Response) => {
-    const ad = await Ad.findById(req.body.id).populate("user");
-    if (!ad) throw new BadRequestError("Ad not found");
-    if (ad!.user.id !== req.currentUser!.id)
-      throw new BadRequestError("Ad not found");
+    const id = req.params.id;
+    if (!mongoose.Types.ObjectId.isValid(id)) throw new NotFoundError("Ad");
+
+    const ad = await Ad.findById(id).populate("user");
+
+    if (!ad) throw new NotFoundError("Ad");
+    if (ad!.user.id !== req.currentUser!.id) throw new NotFoundError("Ad");
 
     ad.set({ status: AdStatus.Closed });
     await ad.save();

@@ -1,19 +1,22 @@
 import express, { Request, Response } from "express";
 import { body } from "express-validator";
+import mongoose from "mongoose";
 import { StatusCodes } from "http-status-codes";
 import {
-  validateRequest,
   requireAuth,
-  NotAuthorizedError,
+  validateRequest,
+  NotFoundError,
+  AdStatus,
+  BadRequestError,
 } from "@sellibu-proj/common";
 
-import { Ad, User } from "../models";
+import { Ad } from "../models";
 import { titleLength, descriptionLength } from "./helpers";
 
 const router = express.Router();
 
-router.post(
-  "/api/ads",
+router.put(
+  "/api/ads/:id",
   requireAuth,
   [
     body("title")
@@ -35,21 +38,22 @@ router.post(
   ],
   validateRequest,
   async (req: Request, res: Response) => {
-    const user = await User.findById(req.currentUser!.id);
+    const id = req.params.id;
+    if (!mongoose.Types.ObjectId.isValid(id)) throw new NotFoundError("Ad");
 
-    if (!user) throw new NotAuthorizedError();
+    const ad = await Ad.findById(id).populate("user");
+    if (!ad) throw new NotFoundError("Ad");
+    if (ad.status === AdStatus.Closed)
+      throw new BadRequestError("Ad is closed.");
+    if (ad.user.id !== req.currentUser!.id) throw new NotFoundError("Ad");
 
     const { title, description, price } = req.body;
-    const ad = Ad.build({
-      title,
-      description,
-      price,
-      user,
-    });
+
+    ad.set({ title, description, price });
     await ad.save();
 
-    res.status(StatusCodes.CREATED).send(ad);
+    res.status(StatusCodes.OK).send(ad);
   }
 );
 
-export { router as createAdRouter };
+export { router as updateAdRouter };
