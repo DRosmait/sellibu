@@ -3,11 +3,17 @@ import { AdStatus } from "@sellibu-proj/common";
 
 import { Ad, User, UserDoc } from "../../../models";
 
-export async function addUserToDB() {
+export async function addUserToDB(
+  payload?: Partial<{
+    email: string;
+    userName: string;
+  }>
+) {
   const user = User.build({
     id: new mongoose.Types.ObjectId().toHexString(),
     email: "test@test.com",
     userName: "Max Mustermann",
+    ...payload,
   });
   await user.save();
 
@@ -32,8 +38,9 @@ export function createAds({
     Array(count)
       .fill("")
       .map(async (_, idx) => {
-        const user = userDoc || (await addUserToDB());
-        const isClosed = idx < count - closedCount - 1;
+        const user =
+          userDoc || (await addUserToDB({ email: `test${idx}@test.com` }));
+        const isClosed = idx < count - closedCount;
         const ad = Ad.build({
           title: `Ad #${idx}`,
           description: `Description for Ad #${idx}`,
@@ -41,6 +48,7 @@ export function createAds({
           user,
           status: isClosed ? AdStatus.Open : AdStatus.Closed,
         });
+        await ad.save();
 
         return ad;
       })
