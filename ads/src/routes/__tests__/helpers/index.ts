@@ -1,16 +1,20 @@
 import mongoose from "mongoose";
 import { AdStatus } from "@sellibu-proj/common";
 
-import { Ad, AdDoc, User, UserDoc } from "../../../models";
+import { Ad, User, UserDoc } from "../../../models";
 
-export async function addUserToDB(
+export function getRandomMongooseId() {
+  return new mongoose.Types.ObjectId().toHexString();
+}
+
+export async function createUserInDB(
   payload?: Partial<{
     email: string;
     userName: string;
   }>
 ) {
   const user = User.build({
-    id: new mongoose.Types.ObjectId().toHexString(),
+    id: getRandomMongooseId(),
     email: "test@test.com",
     userName: "Max Mustermann",
     ...payload,
@@ -20,7 +24,7 @@ export async function addUserToDB(
   return user;
 }
 
-export function createAds({
+export function createAdsInDB({
   count = 10,
   closedCount = 2,
   userDoc,
@@ -31,7 +35,7 @@ export function createAds({
 } = {}) {
   if (count < closedCount)
     throw new Error(
-      "createAds() function expect 'count' greater than 'closedCount'"
+      "createAdsInDB() function expect 'count' greater than 'closedCount'"
     );
 
   return Promise.all(
@@ -39,7 +43,7 @@ export function createAds({
       .fill("")
       .map(async (_, idx) => {
         const user =
-          userDoc || (await addUserToDB({ email: `test${idx}@test.com` }));
+          userDoc || (await createUserInDB({ email: `test${idx}@test.com` }));
         const isClosed = idx < count - closedCount;
         const ad = Ad.build({
           title: `Ad #${idx}`,
