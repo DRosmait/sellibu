@@ -17,3 +17,10 @@ spec:
                 name: auth-srv
                 port:
                   number: 5000
+          - path: /api/ads/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: ads-srv
+                port:
+                  number: 5000
