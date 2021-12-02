@@ -62,9 +62,9 @@ describe("update.ts", () => {
 
     // close the ad
     await request(app)
-      .delete("/api/ads/" + ad.id)
+      .put(`/api/ads/${ad.id}/status`)
       .set("Cookie", global.signin(user.id))
-      .send()
+      .send({ status: AdStatus.Closed })
       .expect(StatusCodes.OK);
 
     // try to update a closed ad

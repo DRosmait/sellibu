@@ -14,7 +14,7 @@ describe("updateStatus.ts", () => {
     await request(app)
       .put(`/api/ads/${getRandomMongooseId()}/status`)
       .set("Cookie", global.signin(user.id))
-      .send({ status: "on:hold" })
+      .send({ status: AdStatus.OnHold })
       .expect(StatusCodes.NOT_FOUND);
   });
 
@@ -47,7 +47,7 @@ describe("updateStatus.ts", () => {
     await request(app)
       .put(`/api/ads/${getRandomMongooseId()}/status`)
       .set("Cookie", global.signin())
-      .send({ status: "on:hold" })
+      .send({ status: AdStatus.OnHold })
       .expect(StatusCodes.NOT_FOUND);
   });
 
@@ -69,7 +69,7 @@ describe("updateStatus.ts", () => {
     await request(app)
       .put(`/api/ads/${ad.id}/status`)
       .set("Cookie", global.signin(user.id))
-      .send({ status: "on:hold" })
+      .send({ status: AdStatus.OnHold })
       .expect(StatusCodes.BAD_REQUEST);
   });
 
@@ -115,7 +115,7 @@ describe("updateStatus.ts", () => {
     const { body: closedAd } = await request(app)
       .put(`/api/ads/${ad.id}/status`)
       .set("Cookie", global.signin(user.id))
-      .send({ status: "closed" })
+      .send({ status: AdStatus.Closed })
       .expect(StatusCodes.OK);
 
     expect(closedAd.status).toEqual(AdStatus.Closed);
