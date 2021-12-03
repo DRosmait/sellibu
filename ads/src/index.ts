@@ -1,14 +1,34 @@
 import mongoose from "mongoose";
 
 import app from "./app";
+import natsWrapper from "./nats-wrapper";
 
 const setup = async () => {
-  if (!process.env.JWT_KEY) {
-    throw new Error("JWT_KEY env variable must be definde.");
-  }
+  const variableNames = [
+    "NATS_CLIENT_ID",
+    "NATS_URL",
+    "NATS_CLUSTER_ID",
+    "MONGO_URI",
+    "JWT_KEY",
+  ];
+
+  variableNames.forEach((varName) => {
+    if (!process.env[varName]) {
+      throw new Error(`${varName} env variable must be definde.`);
+    }
+  });
 
   try {
-    await mongoose.connect("mongodb://ads-mongo-srv:27017/ads");
+    await natsWrapper.connect(
+      process.env.NATS_CLUSTER_ID!,
+      process.env.NATS_CLIENT_ID!,
+      process.env.NATS_URL!
+    );
+
+    process.on("SIGINT", () => natsWrapper.client.close());
+    process.on("SIGTERM", () => natsWrapper.client.close());
+
+    await mongoose.connect(process.env.MONGO_URI!);
     console.log("Connected to MongoDB");
   } catch (err) {
     console.error(err);

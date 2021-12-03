@@ -16,6 +16,16 @@ spec:
         - name: ads
           image: amid3n/ads
           env:
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: NATS_URL
+              value: "http://nats-srv:4222"
+            - name: NATS_CLUSTER_ID
+              value: sellibu
+            - name: MONGO_URI
+              value: "mongodb://ads-mongo-srv:27017/ads"
             - name: JWT_KEY
               valueFrom:
                 secretKeyRef:
