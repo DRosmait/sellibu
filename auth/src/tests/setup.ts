@@ -4,6 +4,8 @@ import request, { Response } from "supertest";
 
 import app from "../app";
 
+jest.mock("../nats-wrapper");
+
 let mongo: MongoMemoryServer;
 
 declare global {
@@ -20,6 +22,8 @@ beforeAll(async () => {
 });
 
 beforeEach(async () => {
+  jest.clearAllMocks();
+
   const collections = mongoose.connection.collections;
 
   await Promise.all(
