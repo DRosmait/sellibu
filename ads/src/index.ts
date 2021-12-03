@@ -2,8 +2,10 @@ import mongoose from "mongoose";
 
 import app from "./app";
 import natsWrapper from "./nats-wrapper";
+import { UserCreatedListener } from "./events/listeners/user-created-listener";
 
 const setup = async () => {
+  // Mandatory ENV variables
   const variableNames = [
     "NATS_CLIENT_ID",
     "NATS_URL",
@@ -19,6 +21,7 @@ const setup = async () => {
   });
 
   try {
+    // Connect to NATS-Streaming
     await natsWrapper.connect(
       process.env.NATS_CLUSTER_ID!,
       process.env.NATS_CLIENT_ID!,
@@ -28,6 +31,10 @@ const setup = async () => {
     process.on("SIGINT", () => natsWrapper.client.close());
     process.on("SIGTERM", () => natsWrapper.client.close());
 
+    // Listen to NATS messages
+    new UserCreatedListener(natsWrapper.client).listen();
+
+    // Connect to Mongoose DB
     await mongoose.connect(process.env.MONGO_URI!);
     console.log("Connected to MongoDB");
   } catch (err) {
