@@ -5,6 +5,8 @@ import { StatusCodes } from "http-status-codes";
 import { validateRequest, BadRequestError } from "@sellibu-proj/common";
 
 import { User } from "../models";
+import natsWrapper from "../nats-wrapper";
+import { UserCreatedPublisher } from "../events";
 
 const router = express.Router();
 
@@ -57,6 +59,13 @@ router.post(
 
     // store JWT user payload in request's session object
     req.session = { jwt: userJwt };
+
+    // Publish user-created event
+    await new UserCreatedPublisher(natsWrapper.client).publish({
+      id: newUser.id,
+      email: newUser.email,
+      userName: newUser.userName,
+    });
 
     res.status(StatusCodes.CREATED).send(newUser);
   }
