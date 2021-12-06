@@ -24,3 +24,10 @@ spec:
                 name: ads-srv
                 port:
                   number: 5000
+          - path: /api/talks/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: talks-srv
+                port:
+                  number: 5000
