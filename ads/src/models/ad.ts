@@ -55,7 +55,6 @@ const adSchema = new mongoose.Schema(
       ref: "User",
     },
     userId: {
-      required: true,
       type: String,
     },
     status: {
