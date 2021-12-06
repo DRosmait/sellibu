@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: talks-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: talks
+  template:
+    metadata:
+      labels:
+        app: talks
+    spec:
+      containers:
+        - name: talks
+          image: amid3n/talks
+          env:
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: NATS_URL
+              value: "http://nats-srv:4222"
+            - name: NATS_CLUSTER_ID
+              value: sellibu
+            - name: MONGO_URI
+              value: "mongodb://talks-mongo-srv:27017/talks"
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: talks-srv
+spec:
+  selector:
+    app: talks
+  ports:
+    - name: talks
+      protocol: TCP
+      port: 5000
+      targetPort: 5000
