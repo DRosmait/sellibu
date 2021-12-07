@@ -7,11 +7,9 @@ import { validateRequest, BadRequestError } from "@sellibu-proj/common";
 import { User } from "../models";
 import natsWrapper from "../nats-wrapper";
 import { UserCreatedPublisher } from "../events";
+import { passwodLength, userNameLength } from "../helpers";
 
 const router = express.Router();
-
-const passwodLength = { min: 8, max: 100 };
-const userNameLength = { min: 2, max: 100 };
 
 router.post(
   "/api/users/signup",
