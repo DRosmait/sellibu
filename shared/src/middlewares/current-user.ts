@@ -5,18 +5,6 @@ interface UserPayload {
   id: string;
   email: string;
   userName: string;
-  phone?: string;
-  location?: {
-    lat?: number;
-    long?: number;
-    radius?: number;
-  };
-  address?: {
-    city?: string;
-    street?: string;
-    country?: string;
-    countryCode?: string;
-  };
 }
 
 declare global {
