@@ -10,6 +10,7 @@ import {
   signoutRouter,
   currentUserRouter,
   updateUserRouter,
+  changePasswordRouter,
 } from "./routes";
 
 const app = express();
@@ -29,6 +30,7 @@ app.use(signinRouter);
 app.use(signoutRouter);
 app.use(currentUserRouter);
 app.use(updateUserRouter);
+app.use(changePasswordRouter);
 
 app.use("*", () => {
   throw new NotFoundError();

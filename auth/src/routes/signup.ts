@@ -7,7 +7,7 @@ import { validateRequest, BadRequestError } from "@sellibu-proj/common";
 import { User } from "../models";
 import natsWrapper from "../nats-wrapper";
 import { UserCreatedPublisher } from "../events";
-import { passwodLength, userNameLength } from "../helpers";
+import { passwordLength, userNameLength } from "../helpers";
 
 const router = express.Router();
 
@@ -17,9 +17,9 @@ router.post(
     body("email").isEmail().withMessage("Email must be valid"),
     body("password")
       .trim()
-      .isLength(passwodLength)
+      .isLength(passwordLength)
       .withMessage(
-        `Password must be between ${passwodLength.min} and ${passwodLength.max} characters`
+        `Password must be between ${passwordLength.min} and ${passwordLength.max} characters`
       ),
     body("userName")
       .trim()
