@@ -16,7 +16,7 @@ describe("update-user.ts", () => {
 
     // try to update user's name without signing in
     await request(app)
-      .put("/api/auth/update")
+      .put("/api/users/update")
       .send({
         email: user.email,
         userName: "New user name",
@@ -30,7 +30,7 @@ describe("update-user.ts", () => {
 
     // try to update the user without all mandatory fields
     await request(app)
-      .put("/api/auth/update")
+      .put("/api/users/update")
       .set("Cookie", cookie)
       .send({
         email: "some_new_email@test.com",
@@ -38,7 +38,7 @@ describe("update-user.ts", () => {
       .expect(StatusCodes.BAD_REQUEST);
 
     await request(app)
-      .put("/api/auth/update")
+      .put("/api/users/update")
       .set("Cookie", cookie)
       .send({
         userName: "New user name",
@@ -53,7 +53,7 @@ describe("update-user.ts", () => {
 
     // try to update nonexistent user
     await request(app)
-      .put("/api/auth/update")
+      .put("/api/users/update")
       .set("Cookie", cookie)
       .send({
         email: "some_new_email@test.com",
@@ -78,7 +78,7 @@ describe("update-user.ts", () => {
 
     // try to update userOne's email using email of user two
     await request(app)
-      .put("/api/auth/update")
+      .put("/api/users/update")
       .set("Cookie", cookie)
       .send({
         email: userTwo.email,
@@ -93,7 +93,7 @@ describe("update-user.ts", () => {
 
     // update user
     const { body: updatedUser } = await request(app)
-      .put("/api/auth/update")
+      .put("/api/users/update")
       .set("Cookie", cookie)
       .send({
         email: "updatedemail@test.com",
