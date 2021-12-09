@@ -49,8 +49,16 @@ const userSchema = new mongoose.Schema(
     },
     phone: String,
     location: {
-      lat: Number,
-      long: Number,
+      lat: {
+        type: Number,
+        min: -180,
+        max: 80,
+      },
+      long: {
+        type: Number,
+        min: -90,
+        max: 90,
+      },
       radius: {
         type: Number,
         default: 1 * 1000, // 1km
