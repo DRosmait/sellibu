@@ -14,7 +14,7 @@ import { userNameLength } from "../helpers";
 
 const router = express.Router();
 
-router.put("/api/auth/update", requireAuth, [
+router.put("/api/users/update", requireAuth, [
   body("email").isEmail().withMessage("Email must be valid"),
   body("userName")
     .trim()
