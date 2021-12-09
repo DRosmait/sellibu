@@ -9,14 +9,14 @@ import { passwordLength } from "../../helpers";
 describe("change-password.ts", () => {
   it(`returns a ${StatusCodes.UNAUTHORIZED} if user is not signed in.`, async () => {
     await request(app)
-      .put("/api/users/update")
+      .put("/api/users/password")
       .send({ oldPassword: "password", newPassword: "updated password" })
       .expect(StatusCodes.UNAUTHORIZED);
   });
 
   it(`returns a ${StatusCodes.UNAUTHORIZED} if user is not found in DB.`, async () => {
     await request(app)
-      .put("/api/users/update")
+      .put("/api/users/password")
       .set("Cookie", getSignedUserCookie())
       .send({ oldPassword: "password", newPassword: "updated password" })
       .expect(StatusCodes.UNAUTHORIZED);
@@ -26,7 +26,7 @@ describe("change-password.ts", () => {
     const { cookie } = await global.signin();
 
     await request(app)
-      .put("/api/users/update")
+      .put("/api/users/password")
       .set("Cookie", cookie)
       .send({ oldPassword: "wrong password", newPassword: "updated password" })
       .expect(StatusCodes.BAD_REQUEST);
@@ -36,7 +36,7 @@ describe("change-password.ts", () => {
     const { cookie } = await global.signin();
 
     await request(app)
-      .put("/api/users/update")
+      .put("/api/users/password")
       .set("Cookie", cookie)
       .send({
         oldPassword: "password",
@@ -45,7 +45,7 @@ describe("change-password.ts", () => {
       .expect(StatusCodes.BAD_REQUEST);
 
     await request(app)
-      .put("/api/users/update")
+      .put("/api/users/password")
       .set("Cookie", cookie)
       .send({
         oldPassword: "password",
@@ -58,7 +58,7 @@ describe("change-password.ts", () => {
     const { cookie } = await global.signin();
 
     await request(app)
-      .put("/api/users/update")
+      .put("/api/users/password")
       .set("Cookie", cookie)
       .send({
         oldPassword: "password",

@@ -14,7 +14,7 @@ import { passwordLength, Password } from "../helpers";
 const router = express.Router();
 
 router.put(
-  "/api/users/update",
+  "/api/users/password",
   requireAuth,
   [
     body("newPassword")
