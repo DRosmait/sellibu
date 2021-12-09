@@ -1,8 +1,8 @@
-export * from "./contact-update";
+export * from "./updateUserContacts";
 
-export * from "./create";
-export * from "./updateStatus";
-export * from "./update";
-export * from "./show";
-export * from "./showAllOfUser";
-export * from "./showAll";
+export * from "./createAd";
+export * from "./updateAdStatus";
+export * from "./updateAd";
+export * from "./showAd";
+export * from "./showAllUserAds";
+export * from "./showAllAds";
