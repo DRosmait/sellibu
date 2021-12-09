@@ -5,6 +5,7 @@ import cookieSession from "cookie-session";
 import { errorHandler, currentUser, NotFoundError } from "@sellibu-proj/common";
 
 import {
+  updateUserContactsRouter,
   createAdRouter,
   updateAdStatusRouter,
   updateAdRouter,
@@ -25,6 +26,8 @@ app.use(
   })
 );
 app.use(currentUser);
+
+app.use(updateUserContactsRouter);
 
 app.use(createAdRouter);
 app.use(updateAdStatusRouter);
