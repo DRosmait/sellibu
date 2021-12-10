@@ -4,6 +4,8 @@ import { json } from "body-parser";
 import cookieSession from "cookie-session";
 import { errorHandler, currentUser, NotFoundError } from "@sellibu-proj/common";
 
+import { createMessageRouter } from "./routes";
+
 const app = express();
 
 app.set("trust proxy", true);
@@ -16,6 +18,8 @@ app.use(
   })
 );
 app.use(currentUser);
+
+app.use(createMessageRouter);
 
 app.use("*", () => {
   throw new NotFoundError();
