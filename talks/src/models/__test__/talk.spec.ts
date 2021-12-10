@@ -42,6 +42,12 @@ describe("talk.ts", () => {
     expect(talk.id).toBeDefined();
   });
 
+  it("has 'userId' and 'ownerId' fields", async () => {
+    const { talk } = await setup();
+    expect(talk.userId).toBeDefined();
+    expect(talk.ownerId).toBeDefined();
+  });
+
   it("implements optimistic concurrency control", async () => {
     const { talk } = await setup();
 

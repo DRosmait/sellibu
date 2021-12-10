@@ -1,44 +1,13 @@
 import request from "supertest";
-import mongoose from "mongoose";
 import { StatusCodes } from "http-status-codes";
-import { AdStatus } from "@sellibu-proj/common";
 
 import app from "../../app";
-import { Ad, User, Talk } from "../../models";
-
-function getRandomMongooseId() {
-  return new mongoose.Types.ObjectId().toHexString();
-}
-
-const setup = async () => {
-  const owner = User.build({
-    id: getRandomMongooseId(),
-    email: "max@test.com",
-    userName: "Max Mustermann",
-  });
-  await owner.save();
-
-  const user = User.build({
-    id: getRandomMongooseId(),
-    email: "lisa@test.com",
-    userName: "Lisa Musterfrau",
-  });
-  await user.save();
-
-  const ad = Ad.build({
-    title: "Some ad",
-    price: 100,
-    user: owner,
-    status: AdStatus.Open,
-  });
-  await ad.save();
-
-  return { owner, user, ad };
-};
+import { Talk } from "../../models";
+import { getRandomMongooseId, createAdOwnerUser } from "./helpers";
 
 describe("createMessage.ts", () => {
   it(`returns a ${StatusCodes.UNAUTHORIZED} if user is not signed in.`, async () => {
-    const { user, ad } = await setup();
+    const { ad } = await createAdOwnerUser();
 
     await request(app)
       .post("/api/talks/message")
@@ -50,7 +19,7 @@ describe("createMessage.ts", () => {
   });
 
   it(`returns a ${StatusCodes.UNAUTHORIZED} if not found in DB.`, async () => {
-    const { ad } = await setup();
+    const { ad } = await createAdOwnerUser();
 
     await request(app)
       .post("/api/talks/message")
@@ -63,7 +32,7 @@ describe("createMessage.ts", () => {
   });
 
   it(`returns a ${StatusCodes.NOT_FOUND} if Ad not found in DB.`, async () => {
-    const { user } = await setup();
+    const { user } = await createAdOwnerUser();
 
     await request(app)
       .post("/api/talks/message")
@@ -76,7 +45,7 @@ describe("createMessage.ts", () => {
   });
 
   it(`returns a ${StatusCodes.BAD_REQUEST} if message has no content or it is empty.`, async () => {
-    const { user, ad } = await setup();
+    const { user, ad } = await createAdOwnerUser();
 
     await request(app)
       .post("/api/talks/message")
@@ -95,7 +64,7 @@ describe("createMessage.ts", () => {
   });
 
   it(`returns a ${StatusCodes.NOT_FOUND} if optional Talk ID passed but Talk not found in DB.`, async () => {
-    const { user, ad } = await setup();
+    const { user, ad } = await createAdOwnerUser();
 
     await request(app)
       .post("/api/talks/message")
@@ -109,7 +78,7 @@ describe("createMessage.ts", () => {
   });
 
   it(`returns a ${StatusCodes.BAD_REQUEST} if owner tries to create a message without passing Talk ID.`, async () => {
-    const { owner, ad } = await setup();
+    const { owner, ad } = await createAdOwnerUser();
 
     await request(app)
       .post("/api/talks/message")
@@ -121,8 +90,8 @@ describe("createMessage.ts", () => {
       .expect(StatusCodes.BAD_REQUEST);
   });
 
-  it(`returns a ${StatusCodes.OK} on successful message creation.`, async () => {
-    const { user, ad } = await setup();
+  it(`returns a ${StatusCodes.CREATED} on successful message creation.`, async () => {
+    const { user, ad } = await createAdOwnerUser();
 
     const { body: message } = await request(app)
       .post("/api/talks/message")
@@ -131,7 +100,7 @@ describe("createMessage.ts", () => {
         content: "Message text",
         adId: ad.id,
       })
-      .expect(StatusCodes.OK);
+      .expect(StatusCodes.CREATED);
 
     expect(message.content).toEqual("Message text");
     expect(message.userId).toEqual(user.id);
@@ -139,7 +108,7 @@ describe("createMessage.ts", () => {
   });
 
   it(`creates talk in DB after successful message creation.`, async () => {
-    const { user, ad } = await setup();
+    const { user, ad } = await createAdOwnerUser();
 
     const { body: message } = await request(app)
       .post("/api/talks/message")
@@ -148,7 +117,7 @@ describe("createMessage.ts", () => {
         content: "Message text",
         adId: ad.id,
       })
-      .expect(StatusCodes.OK);
+      .expect(StatusCodes.CREATED);
 
     const talk = await Talk.findById(message.talkId)
       .populate("ad")
@@ -162,7 +131,7 @@ describe("createMessage.ts", () => {
   });
 
   it("creates messages in existing talk regardless if Talk ID is specified or not (NOT for owner).", async () => {
-    const { owner, user, ad } = await setup();
+    const { owner, user, ad } = await createAdOwnerUser();
 
     const { body: firstMessage } = await request(app)
       .post("/api/talks/message")
@@ -171,7 +140,7 @@ describe("createMessage.ts", () => {
         content: "Message text",
         adId: ad.id,
       })
-      .expect(StatusCodes.OK);
+      .expect(StatusCodes.CREATED);
 
     const talk = await Talk.findById(firstMessage.talkId)
       .populate("ad")
@@ -190,7 +159,7 @@ describe("createMessage.ts", () => {
           adId: ad.id,
           talkId,
         })
-        .expect(StatusCodes.OK);
+        .expect(StatusCodes.CREATED);
     }
   });
 });

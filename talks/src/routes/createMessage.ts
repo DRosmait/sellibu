@@ -72,7 +72,7 @@ router.post(
     talk.set({ updatedAt: message.createdAt });
     await talk.save();
 
-    res.status(StatusCodes.OK).send(message);
+    res.status(StatusCodes.CREATED).send(message);
   }
 );
 

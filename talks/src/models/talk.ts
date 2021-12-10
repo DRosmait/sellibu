@@ -12,7 +12,9 @@ interface TalkAttrs {
 export interface TalkDoc extends mongoose.Document {
   ad: AdDoc;
   user: UserDoc;
+  userId: string;
   owner: UserDoc;
+  ownerId: string;
   createdAt: String;
   updatedAt: String;
   version: number;
@@ -34,11 +36,13 @@ const talkSchema = new mongoose.Schema(
       type: mongoose.Types.ObjectId,
       ref: "User",
     },
+    userId: String,
     owner: {
       required: true,
       type: mongoose.Types.ObjectId,
       ref: "User",
     },
+    ownerId: String,
     createdAt: {
       type: String,
       default: new Date().toISOString(),
@@ -60,6 +64,12 @@ const talkSchema = new mongoose.Schema(
 
 talkSchema.set("versionKey", "version");
 talkSchema.plugin(updateIfCurrentPlugin);
+
+talkSchema.pre("save", function (done) {
+  this.userId = this.user.id;
+  this.ownerId = this.owner.id;
+  done();
+});
 
 talkSchema.statics.build = (attrs: TalkAttrs) => new Talk(attrs);
 
