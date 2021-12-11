@@ -65,13 +65,8 @@ const talkSchema = new mongoose.Schema(
 talkSchema.set("versionKey", "version");
 talkSchema.plugin(updateIfCurrentPlugin);
 
-talkSchema.pre("save", function (done) {
-  this.userId = this.user.id;
-  this.ownerId = this.owner.id;
-  done();
-});
-
-talkSchema.statics.build = (attrs: TalkAttrs) => new Talk(attrs);
+talkSchema.statics.build = (attrs: TalkAttrs) =>
+  new Talk({ ...attrs, ownerId: attrs.owner.id, userId: attrs.user.id });
 
 const Talk = mongoose.model<TalkDoc, TalkModel>("Talk", talkSchema);
 
