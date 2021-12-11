@@ -19,4 +19,4 @@ router.get("/api/talks", requireAuth, async (req: Request, res: Response) => {
   res.status(StatusCodes.OK).send(talksAsUser.concat(talksAsOwner));
 });
 
-export { router as getUserTalks };
+export { router as getUserTalksRouter };
