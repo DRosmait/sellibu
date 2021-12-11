@@ -4,7 +4,11 @@ import { json } from "body-parser";
 import cookieSession from "cookie-session";
 import { errorHandler, currentUser, NotFoundError } from "@sellibu-proj/common";
 
-import { createMessageRouter, getUserTalks } from "./routes";
+import {
+  createMessageRouter,
+  getUserTalksRouter,
+  getTalkMessagesRouter,
+} from "./routes";
 
 const app = express();
 
@@ -20,7 +24,8 @@ app.use(
 app.use(currentUser);
 
 app.use(createMessageRouter);
-app.use(getUserTalks);
+app.use(getTalkMessagesRouter);
+app.use(getUserTalksRouter);
 
 app.use("*", () => {
   throw new NotFoundError();
