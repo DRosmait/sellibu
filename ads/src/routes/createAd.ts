@@ -9,6 +9,8 @@ import {
 
 import { Ad, User } from "../models";
 import { titleLength, descriptionLength } from "./helpers";
+import natsWrapper from "../nats-wrapper";
+import { AdCreatedPublisher } from "../events";
 
 const router = express.Router();
 
@@ -47,6 +49,19 @@ router.post(
       user,
     });
     await ad.save();
+
+    // publish event
+    new AdCreatedPublisher(natsWrapper.client).publish({
+      id: ad.id,
+      title: ad.title,
+      description: ad.description,
+      price: ad.price,
+      status: ad.status,
+      userId: ad.userId,
+      createdAt: ad.createdAt,
+      expiresAt: ad.expiresAt,
+      version: ad.version,
+    });
 
     res.status(StatusCodes.CREATED).send(ad);
   }
