@@ -1,9 +1,8 @@
 import request from "supertest";
 import { StatusCodes } from "http-status-codes";
-import mongoose from "mongoose";
 
 import app from "../../app";
-import { User } from "../../models";
+import natsWrapper from "../../nats-wrapper";
 import { createUserInDB } from "./helpers";
 
 describe("create.ts", () => {
@@ -140,5 +139,21 @@ describe("create.ts", () => {
     expect(newAd.description).toEqual("Ad's long description");
     expect(newAd.price).toEqual(100);
     expect(newAd.user.id).toEqual(user.id);
+  });
+
+  it("publishes an event after successful ad creation.", async () => {
+    const user = await createUserInDB();
+
+    await request(app)
+      .post("/api/ads")
+      .set("Cookie", global.signin(user.id))
+      .send({
+        title: "Ad's title",
+        description: "Ad's long description",
+        price: 100,
+      })
+      .expect(StatusCodes.CREATED);
+
+    expect(natsWrapper.client.publish).toHaveBeenCalled();
   });
 });
