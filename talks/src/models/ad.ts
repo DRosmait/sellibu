@@ -61,12 +61,8 @@ const adSchema = new mongoose.Schema(
 adSchema.set("versionKey", "version");
 adSchema.plugin(updateIfCurrentPlugin);
 
-adSchema.pre("save", function (done) {
-  this.set("userId", this.user.id);
-  done();
-});
-
-adSchema.statics.build = (attrs: AdAttrs) => new Ad(attrs);
+adSchema.statics.build = (attrs: AdAttrs) =>
+  new Ad({ ...attrs, userId: attrs.user.id });
 
 const Ad = mongoose.model<AdDoc, AdModel>("Ad", adSchema);
 
