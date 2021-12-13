@@ -3,9 +3,9 @@ import mongoose from "mongoose";
 import { StatusCodes } from "http-status-codes";
 import { getSignedUserCookie } from "@sellibu-proj/common";
 
-import { User } from "../../models";
-
 import app from "../../app";
+import { User } from "../../models";
+import natsWrapper from "../../nats-wrapper";
 
 describe("update-user.ts", () => {
   it(`returns a ${StatusCodes.UNAUTHORIZED} if user is not authorized.`, async () => {
@@ -103,5 +103,22 @@ describe("update-user.ts", () => {
 
     expect(updatedUser.email).toEqual("updatedemail@test.com");
     expect(updatedUser.userName).toEqual("New user name");
+  });
+
+  it("publishes an event.", async () => {
+    // create users
+    const { cookie } = await global.signin();
+
+    // update user
+    await request(app)
+      .put("/api/users/update")
+      .set("Cookie", cookie)
+      .send({
+        email: "updatedemail@test.com",
+        userName: "New user name",
+      })
+      .expect(StatusCodes.OK);
+
+    expect(natsWrapper.client.publish).toHaveBeenCalledTimes(2); // first time in signin() method after creating the user and second time after update
   });
 });
