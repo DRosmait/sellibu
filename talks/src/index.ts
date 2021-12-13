@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 import app from "./app";
 import natsWrapper from "./nats-wrapper";
-import { UserCreatedListener } from "./events";
+import { UserCreatedListener, UserUpdatedListener } from "./events";
 
 const setup = async () => {
   // Mandatory ENV variables
@@ -33,6 +33,7 @@ const setup = async () => {
 
     // Listen to NATS messages
     new UserCreatedListener(natsWrapper.client).listen();
+    new UserUpdatedListener(natsWrapper.client).listen();
 
     // Connect to Mongoose DB
     await mongoose.connect(process.env.MONGO_URI!);
