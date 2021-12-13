@@ -11,6 +11,8 @@ import {
 
 import { User } from "../models";
 import { userNameLength } from "../helpers";
+import natsWrapper from "../nats-wrapper";
+import { UserUpdatedPublisher } from "../events";
 
 const router = express.Router();
 
@@ -53,6 +55,14 @@ router.put("/api/users/update", requireAuth, [
 
     // store JWT user payload in request's session object
     req.session = { jwt: userJwt };
+
+    // Publish UserUpdatedEvent
+    new UserUpdatedPublisher(natsWrapper.client).publish({
+      id: user.id,
+      email: user.email,
+      userName: user.userName,
+      version: user.version,
+    });
 
     res.status(StatusCodes.OK).send(user);
   },

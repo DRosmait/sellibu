@@ -3,6 +3,7 @@ import { StatusCodes } from "http-status-codes";
 
 import app from "../../app";
 import { User } from "../../models";
+import natsWrapper from "../../nats-wrapper";
 
 describe("signup.ts", () => {
   it(`returns a ${StatusCodes.BAD_REQUEST} if required filds 'email', 'password' or 'userName' are not defined.`, async () => {
@@ -121,5 +122,10 @@ describe("signup.ts", () => {
     const { cookie } = await global.signin();
 
     expect(cookie).toBeDefined();
+  });
+
+  it("publishes an event", async () => {
+    await global.signin();
+    expect(natsWrapper.client.publish).toHaveBeenCalledTimes(1);
   });
 });
