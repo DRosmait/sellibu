@@ -4,3 +4,4 @@ export * from "./base-publisher";
 export * from "./base-listener";
 
 export * from "./user-created-event";
+export * from "./user-updated-event";
