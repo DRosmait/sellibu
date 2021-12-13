@@ -7,7 +7,7 @@ export interface AdUpdatedEvent {
     id: string;
     title: string;
     description: string;
-    price: string;
+    price: number;
     status: AdStatus;
     version: number;
   };

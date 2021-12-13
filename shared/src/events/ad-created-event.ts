@@ -7,7 +7,7 @@ export interface AdCreatedEvent {
     id: string;
     title: string;
     description: string;
-    price: string;
+    price: number;
     status: AdStatus;
     userId: string;
     createdAt: string;
