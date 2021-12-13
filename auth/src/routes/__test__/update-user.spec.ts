@@ -103,7 +103,6 @@ describe("update-user.ts", () => {
 
     expect(updatedUser.email).toEqual("updatedemail@test.com");
     expect(updatedUser.userName).toEqual("New user name");
-    expect(natsWrapper.client.publish).toHaveBeenCalledTimes(1);
   });
 
   it("publishes an event.", async () => {
@@ -120,6 +119,6 @@ describe("update-user.ts", () => {
       })
       .expect(StatusCodes.OK);
 
-    expect(natsWrapper.client.publish).toHaveBeenCalledTimes(2);
+    expect(natsWrapper.client.publish).toHaveBeenCalledTimes(2); // first time in signin() method after creating the user and second time after update
   });
 });
