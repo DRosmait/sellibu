@@ -9,7 +9,7 @@ export class UserCreatedListener extends Listener<UserCreatedEvent> {
   queueGroupName = queueGroupeName;
 
   async onMessage(
-    { id, email, userName }: { id: string; email: string; userName: string },
+    { id, email, userName }: UserCreatedEvent["data"],
     msg: Message
   ): Promise<void> {
     const user = User.build({

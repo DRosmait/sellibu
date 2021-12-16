@@ -5,6 +5,7 @@ import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 import { UserDoc } from "./user";
 
 interface AdAttrs {
+  id: string;
   title: string;
   price: number;
   user: UserDoc;
@@ -61,8 +62,12 @@ const adSchema = new mongoose.Schema(
 adSchema.set("versionKey", "version");
 adSchema.plugin(updateIfCurrentPlugin);
 
-adSchema.statics.build = (attrs: AdAttrs) =>
-  new Ad({ ...attrs, userId: attrs.user.id });
+adSchema.statics.build = ({ id, ...attrs }: AdAttrs) =>
+  new Ad({
+    _id: id,
+    ...attrs,
+    userId: attrs.user.id,
+  });
 
 const Ad = mongoose.model<AdDoc, AdModel>("Ad", adSchema);
 

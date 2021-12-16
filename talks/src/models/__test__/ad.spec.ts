@@ -13,6 +13,7 @@ function getUser() {
 
 async function createAd() {
   const ad = Ad.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
     title: "Title",
     price: 100,
     user: getUser(),
@@ -38,6 +39,7 @@ describe("ad.js", () => {
 
   it(`has '${AdStatus.Open}' default status after creation.`, async () => {
     const ad = Ad.build({
+      id: new mongoose.Types.ObjectId().toHexString(),
       title: "Title",
       price: 100,
       user: getUser(),
