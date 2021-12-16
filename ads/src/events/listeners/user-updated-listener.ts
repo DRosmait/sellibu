@@ -8,10 +8,7 @@ export class UserUpdatedListener extends Listener<UserUpdatedEvent> {
   subject: Subjects.UserUpdated = Subjects.UserUpdated;
   queueGroupName = queueGroupeName;
 
-  async onMessage(
-    data: { id: string; email: string; userName: string; version: number },
-    msg: Message
-  ): Promise<void> {
+  async onMessage(data: UserUpdatedEvent["data"], msg: Message): Promise<void> {
     const user = await User.findByEvent(data);
 
     if (!user) throw new Error("User not found");
