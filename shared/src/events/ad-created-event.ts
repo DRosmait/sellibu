@@ -12,6 +12,5 @@ export interface AdCreatedEvent {
     userId: string;
     createdAt: string;
     expiresAt: string;
-    version: number;
   };
 }
