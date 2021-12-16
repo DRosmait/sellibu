@@ -60,7 +60,6 @@ router.post(
       userId: ad.userId,
       createdAt: ad.createdAt,
       expiresAt: ad.expiresAt,
-      version: ad.version,
     });
 
     res.status(StatusCodes.CREATED).send(ad);
