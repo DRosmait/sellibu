@@ -22,6 +22,7 @@ export const createAdOwnerUser = async () => {
   await user.save();
 
   const ad = Ad.build({
+    id: getRandomMongooseId(),
     title: "Some ad",
     price: 100,
     user: owner,

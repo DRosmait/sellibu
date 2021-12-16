@@ -19,6 +19,7 @@ const setup = async () => {
   await owner.save();
 
   const ad = Ad.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
     title: "Title",
     price: 100,
     user: owner,
